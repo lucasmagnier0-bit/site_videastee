@@ -1,146 +1,122 @@
-import { createFileRoute, Link, Outlet, useMatches } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/onprendrdv")({
   head: () => ({
     meta: [
-      { title: "On prend rendez-vous — Lucas Magnier" },
+      { title: "Prendre rendez-vous — Lucas Magnier" },
       {
         name: "description",
-        content: "Préparons votre film de mariage simplement, autour d'un échange sans pression.",
+        content:
+          "Réservez un échange de 30 minutes pour parler de votre mariage, sans pression, en visio ou au téléphone.",
       },
     ],
   }),
   component: AppointmentPage,
 });
 
-const calendlyUrl = "https://calendly.com/lucasmagnier-videaste/30min?back=1&month=2026-07";
+const calendlyUrl = "https://calendly.com/lucasmagnier-videaste/30min";
+const calendlyEmbedUrl = `${calendlyUrl}?embed_domain=lucasmagnier.fr&embed_type=Inline&hide_gdpr_banner=1&background_color=0c0d0f&text_color=f8f8f8&primary_color=fcea00`;
 
 function AppointmentPage() {
-  const showChildRoute = useMatches().some(
-    (match) => match.routeId === "/onprendrdv/questionnaire",
-  );
-
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       <PageHeader />
-      {showChildRoute ? (
-        <Outlet />
-      ) : (
-        <main className="px-6 md:px-10 pt-36 pb-24 md:pt-48 md:pb-40">
-          <div className="mx-auto max-w-7xl">
-            <div className="flex items-center gap-4 mb-12 font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
-              <span>[ 005 ]</span>
-              <span className="h-px w-16 bg-border" />
-              <span>On prend rendez-vous</span>
-            </div>
-            <div className="max-w-4xl">
-              <h1 className="font-display text-mega">
-                Avant notre rendez-vous
-                <br />
-                <span className="text-acid">découverte.</span>
-              </h1>
-              <p className="mt-10 max-w-3xl text-lg md:text-xl leading-relaxed text-foreground/80">
-                Pour que notre échange soit vraiment utile et centré sur votre mariage, voici les
-                trois petites étapes à suivre avant notre appel.
-              </p>
-            </div>
+      <main className="px-6 md:px-10 pt-32 pb-20 md:pt-40 md:pb-32">
+        <div className="mx-auto max-w-5xl">
+          <div className="flex items-center gap-4 mb-10 font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
+            <span>[ 005 ]</span>
+            <span className="h-px w-16 bg-border" />
+            <span>Prendre rendez-vous</span>
+          </div>
 
-            <div className="mt-16 space-y-6">
-              <article className="border border-border bg-card/60 p-6 md:p-10">
-                <div className="grid items-center gap-10 md:grid-cols-[minmax(0,1fr)_minmax(14rem,18rem)] md:gap-16">
-                  <div className="max-w-2xl">
-                    <div className="font-mono text-sm text-acid mb-7">01</div>
-                    <h2 className="font-display text-4xl md:text-6xl leading-[0.92]">
-                      Regardez la plaquette vidéo
-                    </h2>
-                    <p className="mt-7 max-w-xl text-base md:text-lg leading-relaxed text-foreground/75">
-                      Une minute pour découvrir mon univers, ma façon de travailler et ce que
-                      j'aime garder dans un film de mariage.
-                    </p>
-                  </div>
-                  <div className="mx-auto aspect-[9/16] w-full max-w-64 overflow-hidden border border-border bg-background shadow-2xl">
-                    <iframe
-                      src="https://www.youtube-nocookie.com/embed/p_AQHHLWXws?rel=0&autoplay=1&mute=1&playsinline=1"
-                      title="La plaquette vidéo de Lucas Magnier"
-                      className="h-full w-full"
-                      loading="lazy"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      allowFullScreen
-                    />
-                  </div>
+          <h1 className="font-display text-5xl leading-[0.95] md:text-7xl max-w-4xl">
+            Parlons de votre mariage,
+            <br />
+            <span className="text-acid">30 minutes suffisent.</span>
+          </h1>
+          <p className="mt-8 max-w-2xl text-lg md:text-xl leading-relaxed text-foreground/80">
+            Une conversation simple pour parler de votre journée et voir si le feeling passe bien
+            des deux côtés. Choisissez le créneau qui vous arrange ci-dessous.
+          </p>
+
+          <ul className="mt-10 grid grid-cols-1 gap-px bg-border sm:grid-cols-3">
+            {[
+              ["30 min", "Un échange court, sans préparation"],
+              ["Visio ou téléphone", "Comme vous préférez"],
+              ["Sans pression", "Aucun engagement à la clé"],
+            ].map(([title, description]) => (
+              <li key={title} className="bg-card/60 p-5 md:p-6">
+                <div className="font-display text-2xl md:text-3xl leading-[0.95] text-acid">
+                  {title}
                 </div>
-              </article>
+                <p className="mt-2 text-sm md:text-base text-muted-foreground">{description}</p>
+              </li>
+            ))}
+          </ul>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-border">
-                <StepCard number="02" title="Réservez votre créneau">
-                <p className="text-base leading-relaxed text-foreground/75">
-                  Choisissez simplement le moment qui vous convient le mieux pour que nous puissions
-                  échanger tranquillement, sans courir entre deux préparatifs.
-                </p>
-                <a
-                  href={calendlyUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-8 inline-flex items-center justify-center bg-acid text-black px-5 py-4 font-mono text-xs uppercase tracking-[0.16em] hover:bg-foreground hover:text-background transition-colors magnetic-button"
-                >
-                  Choisir un créneau →
-                </a>
-              </StepCard>
-                <StepCard number="03" title="Répondez au questionnaire">
-                <p className="text-base leading-relaxed text-foreground/75">
-                  Il me permettra d'en savoir un peu plus sur votre journée, vos envies et les
-                  moments que vous voulez absolument retrouver dans votre film.
-                </p>
-                <p className="mt-4 text-sm leading-relaxed text-acid">
-                  Si possible, remplissez-le au moins 48 h avant notre rendez-vous.
-                </p>
-                <Link
-                  to="/onprendrdv/questionnaire"
-                  className="mt-8 inline-flex items-center justify-center border border-border px-5 py-4 font-mono text-xs uppercase tracking-[0.16em] hover:border-acid hover:text-acid transition-colors"
-                >
-                  Ouvrir le questionnaire →
-                </Link>
-              </StepCard>
-              </div>
-            </div>
+          <section aria-label="Réserver un créneau" className="mt-10 border border-border">
+            <iframe
+              src={calendlyEmbedUrl}
+              title="Réserver un créneau de 30 minutes avec Lucas Magnier"
+              className="block h-[780px] w-full bg-card md:h-[720px]"
+            />
+          </section>
+          <p className="mt-4 text-sm text-muted-foreground">
+            Le calendrier ne s'affiche pas ?{" "}
+            <a
+              href={calendlyUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="text-acid underline underline-offset-4 hover:text-foreground transition-colors"
+            >
+              Ouvrez-le dans un nouvel onglet
+            </a>
+            . Vous recevrez ensuite une confirmation par e-mail.
+          </p>
 
-            <div className="mt-12 border border-acid bg-acid/10 p-7 md:p-10 max-w-4xl">
-              <div className="font-mono text-xs uppercase tracking-[0.2em] text-acid mb-5">
-                L'objectif
-              </div>
-              <p className="font-display text-3xl md:text-5xl leading-[0.95]">
-                Le jour du rendez-vous, on se concentre sur vous, votre journée et le film qui vous
-                ressemble vraiment.
+          <div className="mt-16 flex flex-col gap-6 border border-border bg-card/60 p-6 md:flex-row md:items-center md:justify-between md:p-8">
+            <div className="max-w-xl">
+              <h2 className="font-display text-3xl md:text-4xl leading-[0.95]">
+                Vous préférez écrire ?
+              </h2>
+              <p className="mt-4 text-base leading-relaxed text-foreground/75">
+                Aucun souci : laissez-moi un petit message avec la date de votre mariage, je vous
+                réponds sous 48 h.
               </p>
-              <div className="mt-7 border-t border-acid/40 pt-6 text-base md:text-lg leading-relaxed text-foreground/80">
-                Environ 30 minutes, en visio ou au téléphone. Et surtout, une conversation simple
-                pour voir si le feeling passe bien des deux côtés.
-              </div>
+            </div>
+            <Link
+              to="/"
+              hash="message"
+              className="inline-flex shrink-0 items-center justify-center border border-border px-5 py-4 font-mono text-xs uppercase tracking-[0.16em] hover:border-acid hover:text-acid transition-colors"
+            >
+              M'écrire un message →
+            </Link>
+          </div>
+
+          <div className="mt-6 grid items-center gap-8 border border-border bg-card/60 p-6 md:grid-cols-[minmax(0,1fr)_14rem] md:gap-12 md:p-8">
+            <div className="max-w-xl">
+              <h2 className="font-display text-3xl md:text-4xl leading-[0.95]">
+                Une minute pour me découvrir
+              </h2>
+              <p className="mt-4 text-base leading-relaxed text-foreground/75">
+                Ma façon de travailler et ce que j'aime garder dans un film de mariage.
+              </p>
+            </div>
+            <div className="mx-auto aspect-[9/16] w-full max-w-56 overflow-hidden border border-border bg-background">
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/p_AQHHLWXws?rel=0&playsinline=1"
+                title="La plaquette vidéo de Lucas Magnier"
+                className="h-full w-full"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
             </div>
           </div>
-        </main>
-      )}
+        </div>
+      </main>
       <PageFooter />
     </div>
-  );
-}
-
-function StepCard({
-  number,
-  title,
-  children,
-}: {
-  number: string;
-  title: string;
-  children: ReactNode;
-}) {
-  return (
-    <article className="bg-card/60 p-6 md:p-8 min-h-80 flex flex-col">
-      <div className="font-mono text-sm text-acid mb-7">{number}</div>
-      <h2 className="font-display text-3xl md:text-4xl leading-[0.92] mb-7">{title}</h2>
-      <div className="mt-auto">{children}</div>
-    </article>
   );
 }
 

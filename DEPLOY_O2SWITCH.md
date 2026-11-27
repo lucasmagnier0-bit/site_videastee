@@ -27,14 +27,13 @@ Ne téléverse pas `node_modules`, `src`, `dist/server` ou les fichiers de déve
 
 Le domaine doit pointer vers o2switch via les nameservers indiqués dans ton e-mail de bienvenue, ou via l’enregistrement DNS demandé par o2switch. Après propagation, active le certificat SSL gratuit dans cPanel si nécessaire.
 
-Le fichier `.htaccess` est important : il permet d’ouvrir directement `/onprendrdv` et `/onprendrdv/questionnaire` tout en laissant le routeur du site fonctionner.
+Le fichier `.htaccess` est important : il permet d’ouvrir directement `/onprendrdv` tout en laissant le routeur du site fonctionner.
 
 ## 4. Vérifier
 
 Teste ces adresses :
 
 - `/`
-- `/onprendrdv`
-- `/onprendrdv/questionnaire`
+- `/onprendrdv` (le calendrier Calendly doit s’afficher)
 
-Les formulaires envoient les demandes à `lucasmagnier.videaste@gmail.com` via FormSubmit. La première soumission demande une confirmation de cette adresse.
+Le formulaire de contact envoie les demandes à `lucasmagnier.videaste@gmail.com` via FormSubmit. La première soumission demande une confirmation de cette adresse.

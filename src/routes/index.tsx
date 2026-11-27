@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState, type CSSProperties } from "react";
 import hero from "@/assets/martin1.jpg";
 import w1 from "@/assets/w1.jpg";
@@ -116,30 +116,42 @@ const offers = [
   {
     number: "01",
     name: "BEST OF",
-    price: "1 500 € TTC",
-    duration: "5 à 6 h · cérémonies & vin d'honneur",
+    price: "1 500 €",
     description:
       "Un film court et percutant pour garder une trace authentique des temps forts, sans courir après chaque minute de la journée.",
-    film: "Film de 5 à 6 minutes",
+    presence: "5 à 6 h",
+    moments: "Cérémonies et vin d'honneur",
+    film: "5 à 6 minutes",
   },
   {
     number: "02",
     name: "PLEIN CADRE",
-    price: "1 800 € TTC",
-    duration: "10 à 11 h · préparatifs au vin d'honneur",
+    price: "1 800 €",
     description:
       "Les coulisses du matin, la montée en émotion, les embrassades du cocktail : le récit prend le temps de respirer.",
-    film: "Film de 8 à 10 minutes",
+    presence: "10 à 11 h",
+    moments: "Des préparatifs au vin d'honneur",
+    film: "8 à 10 minutes",
   },
   {
     number: "03",
     name: "GRAND ÉCRAN",
-    price: "2 100 € TTC",
-    duration: "13 à 14 h · du matin à la piste de danse",
+    price: "2 100 €",
     description:
       "La journée complète, les discours, la première danse et toute l'ambiance. Pour revivre votre histoire du réveil à la fête.",
-    film: "Film de 12 à 15 minutes",
+    presence: "13 à 14 h",
+    moments: "Du matin à la piste de danse",
+    film: "12 à 15 minutes",
   },
+];
+
+const included = ["Préparation en amont", "Teaser d'une minute", "Coffret USB personnalisé"];
+
+const extras = [
+  ["Captation intégrale", "Cérémonie ou discours", "150 € TTC"],
+  ["Second vidéaste", "Un double point de vue", "Sur devis"],
+  ["Tournage la veille", "Dîner ou soirée de la veille", "300 € TTC"],
+  ["Vidéo du brunch", "Le lendemain, sans se presser", "300 € TTC"],
 ];
 
 function useScrollReveal() {
@@ -451,7 +463,7 @@ function Offers() {
     <section id="formules" className="border-t border-border bg-card/40 py-20 md:py-32">
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         <div
-          className="flex items-end justify-between gap-8 flex-wrap mb-16"
+          className="flex items-end justify-between gap-8 flex-wrap mb-14"
           data-reveal="section-heading"
         >
           <div>
@@ -467,120 +479,167 @@ function Offers() {
               À votre <span className="text-acid">image</span>
             </h2>
           </div>
-          <p className="max-w-sm text-sm text-muted-foreground font-mono">
+          <p className="max-w-sm text-base text-muted-foreground leading-relaxed">
             Trois façons de raconter votre journée, selon le temps que vous voulez garder en images.
           </p>
         </div>
-        <div
-          className="mb-16 grid gap-8 border-y border-border py-8 md:grid-cols-[minmax(12rem,0.75fr)_minmax(0,2fr)] md:items-center"
-          data-reveal="highlight"
-        >
-          <div className="font-mono text-xs uppercase tracking-[0.22em] text-acid">
-            Inclus dans chaque formule
-          </div>
-          <div className="grid gap-5 sm:grid-cols-3">
-            {[
-              ["01", "Préparation en amont"],
-              ["02", "Teaser d'une minute"],
-              ["03", "Coffret USB personnalisé"],
-            ].map(([number, label]) => (
-              <div key={number} className="border-l border-acid/60 pl-4">
-                <div className="font-mono text-[10px] tracking-[0.18em] text-acid">{number}</div>
-                <div className="mt-2 text-sm leading-snug text-foreground/85">{label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 border-t border-border">
+
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {offers.map((offer) => (
             <article
               key={offer.number}
-              className="border-b border-border px-0 py-10 last:border-b-0 lg:border-r lg:border-b-0 lg:px-8 lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0 offer-card"
+              className="offer-card flex flex-col border border-border bg-card/60 p-7 md:p-8"
               data-reveal="offer-card"
             >
-              <div className="font-mono text-xs text-acid">FORMULE {offer.number}</div>
-              <h3 className="font-display text-4xl md:text-5xl leading-[0.95]">{offer.name}</h3>
-              <div className="mt-6 font-mono text-xl text-acid">{offer.price}</div>
-              <p className="mt-6 border-y border-border py-4 font-mono text-xs uppercase tracking-[0.14em] leading-relaxed text-muted-foreground">
-                {offer.duration}
-              </p>
-              <p className="mt-7 text-sm leading-relaxed text-muted-foreground">
+              <div className="font-mono text-sm uppercase tracking-[0.16em] text-acid">
+                Formule {offer.number}
+              </div>
+              <h3 className="mt-4 font-display text-4xl md:text-5xl leading-[0.95]">
+                {offer.name}
+              </h3>
+              <div className="mt-6 flex items-baseline gap-3">
+                <span className="font-display text-5xl md:text-6xl leading-none text-acid">
+                  {offer.price}
+                </span>
+                <span className="font-mono text-sm text-muted-foreground">TTC</span>
+              </div>
+              <p className="mt-6 text-base leading-relaxed text-foreground/80">
                 {offer.description}
               </p>
-              <div className="mt-8 font-mono text-xs uppercase tracking-[0.14em] leading-relaxed text-foreground/90">
-                {offer.film}
-              </div>
+              <dl className="mt-8 border-t border-border">
+                {[
+                  ["Présence", offer.presence],
+                  ["Moments filmés", offer.moments],
+                  ["Votre film", offer.film],
+                ].map(([label, value]) => (
+                  <div
+                    key={label}
+                    className="flex items-baseline justify-between gap-6 border-b border-border py-4"
+                  >
+                    <dt className="shrink-0 font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground">
+                      {label}
+                    </dt>
+                    <dd className="text-right text-base leading-snug text-foreground">{value}</dd>
+                  </div>
+                ))}
+              </dl>
             </article>
           ))}
         </div>
-        <div className="mt-16 border-t border-border pt-10">
+
+        <div
+          className="mt-6 flex flex-col gap-5 border border-border bg-card/60 p-6 md:flex-row md:items-center md:gap-10 md:p-8"
+          data-reveal="highlight"
+        >
+          <div className="shrink-0 font-mono text-sm uppercase tracking-[0.16em] text-acid">
+            Inclus dans chaque formule
+          </div>
+          <ul className="grid flex-1 gap-3 sm:grid-cols-3">
+            {included.map((label) => (
+              <li key={label} className="flex items-start gap-3 text-base text-foreground/90">
+                <span className="text-acid" aria-hidden="true">
+                  ✓
+                </span>
+                {label}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-20 border-t border-border pt-10">
           <div className="flex items-baseline justify-between gap-6 flex-wrap mb-7">
-            <div className="font-mono text-xs uppercase tracking-[0.2em] text-acid">
+            <div className="font-mono text-sm uppercase tracking-[0.2em] text-acid">
               Options à la carte
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-base text-muted-foreground">
               On ajoute uniquement ce qui a du sens pour votre journée.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border">
-            {[
-              ["Captation intégrale", "Cérémonie ou discours", "150 € TTC"],
-              ["Second vidéaste", "Un double point de vue", "Sur devis"],
-              ["Tournage la veille", "Dîner ou soirée de la veille", "300 € TTC"],
-              ["Vidéo du brunch", "Le lendemain, sans se presser", "300 € TTC"],
-            ].map(([title, description, price]) => (
-              <div
+          <ul className="grid grid-cols-1 gap-px border border-border bg-border md:grid-cols-2">
+            {extras.map(([title, description, price]) => (
+              <li
                 key={title}
-                className="bg-card/40 p-6 min-h-36 flex flex-col justify-between option-card"
+                className="option-card flex items-start justify-between gap-6 bg-card/60 p-5 md:p-6"
                 data-reveal="option-card"
               >
                 <div>
-                  <h3 className="font-display text-xl leading-[0.95]">{title}</h3>
-                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                  <h3 className="font-display text-xl md:text-2xl leading-[0.95]">{title}</h3>
+                  <p className="mt-2 text-sm md:text-base text-muted-foreground leading-relaxed">
                     {description}
                   </p>
                 </div>
-                <div className="mt-5 font-mono text-xs uppercase tracking-[0.16em] text-acid">
+                <div className="shrink-0 whitespace-nowrap text-right font-mono text-sm md:text-base text-acid">
                   {price}
                 </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <aside className="mt-20 border-t border-border pt-8" data-reveal="good-to-know">
+          <div className="flex flex-col gap-3 md:flex-row md:items-baseline md:justify-between">
+            <h3 className="font-display text-4xl md:text-5xl leading-[0.9]">
+              Bon à <span className="text-acid">savoir</span>
+            </h3>
+            <span className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">
+              Les détails qui comptent
+            </span>
+          </div>
+          <div className="mt-8 grid grid-cols-1 border-y border-border sm:grid-cols-3">
+            {[
+              ["6 semaines", "Livraison sous six semaines maximum."],
+              ["Drone", "Selon les conditions et les autorisations du lieu."],
+              ["80 km", "Déplacements inclus dans ce rayon autour de moi."],
+            ].map(([title, description]) => (
+              <div
+                key={title}
+                className="px-0 py-6 sm:px-6 sm:first:pl-0 sm:border-l sm:first:border-l-0 border-border"
+              >
+                <div className="font-display text-3xl md:text-4xl leading-[0.9]">{title}</div>
+                <p className="mt-3 max-w-xs text-sm md:text-base leading-relaxed text-muted-foreground">
+                  {description}
+                </p>
               </div>
             ))}
           </div>
-          <aside className="mt-16 border-t border-border pt-8" data-reveal="good-to-know">
-            <div className="flex flex-col gap-3 md:flex-row md:items-baseline md:justify-between">
-              <h3 className="font-display text-4xl md:text-5xl leading-[0.9]">
-                Bon à <span className="text-acid">savoir</span>
-              </h3>
-              <span className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">
-                Les détails qui comptent
-              </span>
-            </div>
-            <div className="mt-8 grid grid-cols-1 border-y border-border sm:grid-cols-3">
-              {[
-                ["6 semaines", "Livraison sous six semaines maximum."],
-                ["Drone", "Selon les conditions et les autorisations du lieu."],
-                ["80 km", "Déplacements inclus dans ce rayon autour de moi."],
-              ].map(([title, description]) => (
-                <div
-                  key={title}
-                  className="px-0 py-6 sm:px-6 sm:first:pl-0 sm:border-l sm:first:border-l-0 border-border"
-                >
-                  <div className="font-display text-3xl md:text-4xl leading-[0.9]">{title}</div>
-                  <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
-                    {description}
-                  </p>
-                </div>
-              ))}
-            </div>
-            <p className="mt-6 border-l-2 border-acid pl-4 text-sm md:text-base leading-relaxed text-foreground/75">
-              On en parle simplement lors de notre premier échange, sans petite ligne cachée.
+          <p className="mt-6 border-l-2 border-acid pl-4 text-sm md:text-base leading-relaxed text-foreground/75">
+            On en parle simplement lors de notre premier échange, sans petite ligne cachée.
+          </p>
+        </aside>
+
+        <div className="mt-20 flex flex-col gap-8 border border-acid bg-acid/10 p-7 md:flex-row md:items-center md:justify-between md:p-10">
+          <div>
+            <h3 className="font-display text-3xl md:text-5xl leading-[0.95]">
+              Une formule vous parle ?
+            </h3>
+            <p className="mt-4 max-w-xl text-base md:text-lg leading-relaxed text-foreground/80">
+              On en discute 30 minutes, en visio ou au téléphone, pour trouver celle qui colle à
+              votre journée.
             </p>
-          </aside>
+          </div>
+          <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+            <Link
+              to="/onprendrdv"
+              className="inline-flex items-center justify-center bg-acid px-6 py-4 font-mono text-xs uppercase tracking-[0.16em] text-black transition-colors hover:bg-foreground hover:text-background magnetic-button"
+            >
+              Prendre rendez-vous →
+            </Link>
+            <a
+              href="#message"
+              className="inline-flex items-center justify-center border border-border px-6 py-4 font-mono text-xs uppercase tracking-[0.16em] transition-colors hover:border-acid hover:text-acid"
+            >
+              Poser une question
+            </a>
+          </div>
         </div>
       </div>
     </section>
   );
 }
+
+const fieldLabelClass =
+  "block font-mono text-sm uppercase tracking-[0.16em] text-foreground/80 mb-2";
+const fieldWrapClass = "border-b border-border pb-3";
 
 function Contact() {
   const [sent, setSent] = useState(false);
@@ -589,7 +648,7 @@ function Contact() {
   return (
     <section
       id="contact"
-      className="relative border-t border-border px-6 md:px-10 py-24 md:py-48 grain-overlay"
+      className="relative border-t border-border px-6 md:px-10 py-24 md:py-40 grain-overlay"
     >
       <div className="mx-auto max-w-7xl">
         <div
@@ -605,130 +664,168 @@ function Contact() {
           <br />
           votre <span className="text-acid">histoire.</span>
         </h2>
-        <div className="mt-12 max-w-3xl" data-reveal="contact-choices">
-          <a
-            href="/onprendrdv"
-            className="group appointment-cta bg-card/70 p-7 md:p-9 min-h-48 flex flex-col justify-between hover:bg-acid hover:text-black transition-colors"
-          >
-            <div className="font-mono text-[11px] uppercase tracking-[0.25em] text-acid group-hover:text-black">
-              Avant le formulaire
-            </div>
-            <div>
-              <h3 className="font-display text-4xl md:text-5xl leading-[0.92]">
-                Prendre rendez-vous
-              </h3>
-              <p className="mt-4 max-w-md text-sm text-muted-foreground group-hover:text-black/70">
-                On fait connaissance tranquillement pendant 30 minutes. Choisissez votre créneau.
-              </p>
-            </div>
-            <span className="appointment-arrow" aria-hidden="true">
-              ↗
-            </span>
-          </a>
-        </div>
-        <div id="message" className="mt-14 md:mt-20 grid grid-cols-1 md:grid-cols-5 gap-12">
-          <form
-            onSubmit={async (event) => {
-              event.preventDefault();
-              setSending(true);
-              setSendError("");
-              const form = event.currentTarget;
-              const formData = Object.fromEntries(new FormData(form).entries());
+        <p className="mt-8 max-w-2xl text-lg md:text-xl leading-relaxed text-foreground/80">
+          Deux façons de commencer, au choix. Basé dans les Hauts-de-France, je me déplace là où se
+          passe votre histoire.
+        </p>
 
-              try {
-                await submitForm({
-                  ...Object.fromEntries(
-                    Object.entries(formData).map(([key, value]) => [key, String(value)]),
-                  ),
-                  _subject: "Nouveau message depuis le site — Lucas Magnier",
-                  _replyto: String(formData.email || ""),
-                  _template: "table",
-                  _honey: "",
-                });
-                form.reset();
-                setSent(true);
-              } catch {
-                setSendError(
-                  "L'envoi n'a pas fonctionné. Vérifiez votre connexion et réessayez dans un instant.",
-                );
-              } finally {
-                setSending(false);
-              }
-            }}
-            className="md:col-span-3 space-y-6"
-            data-reveal="contact-form"
-          >
-            {[
-              { name: "name", label: "01 — Vos prénoms", type: "text" },
-              { name: "email", label: "02 — Votre e-mail", type: "email" },
-              { name: "date", label: "03 — Date & lieu du mariage", type: "text" },
-            ].map((field) => (
-              <div key={field.name} className="border-b border-border pb-3">
-                <label className="block font-mono text-sm md:text-base uppercase tracking-[0.16em] text-foreground/80 mb-2">
-                  {field.label}
-                </label>
-                <input
-                  required
-                  type={field.type}
-                  name={field.name}
-                  className="w-full bg-transparent outline-none font-display text-2xl md:text-3xl placeholder:text-muted/50 focus:text-acid transition-colors"
-                  placeholder="—"
-                />
-              </div>
-            ))}
-            <div className="border-b border-border pb-3">
-              <label className="block font-mono text-sm md:text-base uppercase tracking-[0.16em] text-foreground/80 mb-2">
-                04 — Racontez-moi votre journée
-              </label>
-              <textarea
-                required
-                rows={3}
-                name="msg"
-                className="w-full bg-transparent outline-none font-sans text-xl md:text-2xl placeholder:text-foreground/70 resize-none"
-                placeholder="Le lieu, l'ambiance, vos envies… et les détails qui comptent pour vous."
-              />
+        <div className="mt-14 grid grid-cols-1 gap-12 lg:grid-cols-5 lg:gap-16">
+          <div className="flex flex-col lg:col-span-2" data-reveal="contact-choices">
+            <div className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-acid">
+              Option 1 · En direct
             </div>
-            <button
-              type="submit"
-              disabled={sending}
-              className="w-full mt-8 bg-acid text-black py-8 font-display text-3xl md:text-5xl uppercase hover:bg-foreground hover:text-background transition-colors magnetic-button"
+            <Link
+              to="/onprendrdv"
+              className="group appointment-cta bg-card/70 p-7 md:p-9 min-h-72 flex-1 flex flex-col justify-between hover:bg-acid hover:text-black transition-colors"
             >
-              {sending ? "Envoi en cours…" : sent ? "→ À très vite" : "On en parle →"}
-            </button>
-            {sendError ? (
-              <p className="text-sm md:text-base text-destructive leading-relaxed">{sendError}</p>
-            ) : null}
-          </form>
-          <aside
-            className="md:col-span-2 space-y-10 font-mono text-base md:text-lg"
-            data-reveal="contact-aside"
-          >
-            <div>
-              <div className="text-sm md:text-base uppercase tracking-[0.16em] text-foreground/75 mb-3">
-                Ici, pas de formulaire froid
+              <div>
+                <h3 className="font-display text-4xl md:text-5xl leading-[0.92]">
+                  Réserver un appel
+                </h3>
+                <p className="mt-5 max-w-sm text-base leading-relaxed text-foreground/80 group-hover:text-black/75">
+                  30 minutes en visio ou au téléphone pour faire connaissance, sans pression. Vous
+                  choisissez directement votre créneau.
+                </p>
               </div>
-              <p className="text-foreground leading-relaxed">
-                Dites-moi ce qui vous fait vibrer, ce que vous imaginez — ou justement ce que vous
-                ne voulez surtout pas. Je vous réponds sous 48 h.
-              </p>
+              <span className="appointment-arrow" aria-hidden="true">
+                ↗
+              </span>
+            </Link>
+          </div>
+
+          <div id="message" className="scroll-mt-28 lg:col-span-3" data-reveal="contact-form">
+            <div className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-acid">
+              Option 2 · Par écrit
             </div>
-            <div>
-              <div className="text-sm md:text-base uppercase tracking-[0.16em] text-foreground/75 mb-3">
-                Basé dans les Hauts-de-France
+            {sent ? (
+              <div className="border border-acid bg-acid/10 p-8 md:p-10" role="status">
+                <div className="font-mono text-xs uppercase tracking-[0.2em] text-acid mb-5">
+                  C'est bien reçu
+                </div>
+                <h3 className="font-display text-4xl md:text-6xl leading-[0.92]">
+                  Merci, je vous réponds sous 48 h.
+                </h3>
+                <p className="mt-6 max-w-xl text-base md:text-lg leading-relaxed text-foreground/80">
+                  Si vous préférez ne pas attendre, vous pouvez aussi réserver directement un appel
+                  de 30 minutes.
+                </p>
+                <Link
+                  to="/onprendrdv"
+                  className="mt-8 inline-flex items-center justify-center bg-acid px-6 py-4 font-mono text-xs uppercase tracking-[0.16em] text-black transition-colors hover:bg-foreground hover:text-background"
+                >
+                  Choisir un créneau →
+                </Link>
               </div>
-              <p className="text-foreground">Disponible là où votre histoire se passe.</p>
-            </div>
-            <div className="border-t border-border pt-6 text-muted-foreground leading-relaxed">
-              Un rendez-vous de préparation nous permet de faire connaissance, de parler de vos
-              attentes et de laisser la place aux surprises.
-            </div>
-            <a
-              href="/onprendrdv/questionnaire"
-              className="inline-flex text-acid hover:text-foreground transition-colors"
-            >
-              Préparer notre échange →
-            </a>
-          </aside>
+            ) : (
+              <form
+                onSubmit={async (event) => {
+                  event.preventDefault();
+                  setSending(true);
+                  setSendError("");
+                  const form = event.currentTarget;
+                  const formData = Object.fromEntries(new FormData(form).entries());
+
+                  try {
+                    await submitForm({
+                      ...Object.fromEntries(
+                        Object.entries(formData).map(([key, value]) => [key, String(value)]),
+                      ),
+                      _subject: "Nouveau message depuis le site — Lucas Magnier",
+                      _replyto: String(formData.email || ""),
+                      _template: "table",
+                      _honey: "",
+                    });
+                    form.reset();
+                    setSent(true);
+                  } catch {
+                    setSendError(
+                      "L'envoi n'a pas fonctionné. Vérifiez votre connexion et réessayez dans un instant.",
+                    );
+                  } finally {
+                    setSending(false);
+                  }
+                }}
+                className="space-y-7"
+              >
+                <div className="grid grid-cols-1 gap-7 md:grid-cols-2">
+                  <div className={fieldWrapClass}>
+                    <label className={fieldLabelClass} htmlFor="contact-names">
+                      Vos prénoms
+                    </label>
+                    <input
+                      required
+                      id="contact-names"
+                      name="prenoms"
+                      type="text"
+                      autoComplete="name"
+                      className="w-full bg-transparent outline-none font-display text-2xl md:text-3xl placeholder:text-muted/50 focus:text-acid transition-colors"
+                      placeholder="—"
+                    />
+                  </div>
+                  <div className={fieldWrapClass}>
+                    <label className={fieldLabelClass} htmlFor="contact-email">
+                      Votre e-mail
+                    </label>
+                    <input
+                      required
+                      id="contact-email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      className="w-full bg-transparent outline-none font-display text-2xl md:text-3xl placeholder:text-muted/50 focus:text-acid transition-colors"
+                      placeholder="—"
+                    />
+                  </div>
+                </div>
+                <div className={fieldWrapClass}>
+                  <label className={fieldLabelClass} htmlFor="contact-date">
+                    Date et lieu du mariage{" "}
+                    <span className="normal-case tracking-normal text-muted-foreground">
+                      (même approximatifs)
+                    </span>
+                  </label>
+                  <input
+                    required
+                    id="contact-date"
+                    name="date_lieu"
+                    type="text"
+                    className="w-full bg-transparent outline-none font-display text-2xl md:text-3xl placeholder:text-muted/50 focus:text-acid transition-colors"
+                    placeholder="—"
+                  />
+                </div>
+                <div className={fieldWrapClass}>
+                  <label className={fieldLabelClass} htmlFor="contact-message">
+                    Un mot sur votre journée{" "}
+                    <span className="normal-case tracking-normal text-muted-foreground">
+                      (facultatif)
+                    </span>
+                  </label>
+                  <textarea
+                    id="contact-message"
+                    rows={3}
+                    name="message"
+                    className="w-full bg-transparent outline-none font-sans text-xl md:text-2xl placeholder:text-foreground/40 resize-none"
+                    placeholder="Le lieu, l'ambiance, vos envies…"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={sending}
+                  className="w-full bg-acid text-black py-6 font-display text-3xl md:text-4xl uppercase hover:bg-foreground hover:text-background transition-colors magnetic-button disabled:opacity-70"
+                >
+                  {sending ? "Envoi en cours…" : "Envoyer mon message →"}
+                </button>
+                {sendError ? (
+                  <p role="alert" className="text-sm md:text-base text-destructive leading-relaxed">
+                    {sendError}
+                  </p>
+                ) : null}
+                <p className="font-mono text-sm leading-relaxed text-foreground/70">
+                  Je vous réponds personnellement sous 48 h.
+                </p>
+              </form>
+            )}
+          </div>
         </div>
       </div>
     </section>
